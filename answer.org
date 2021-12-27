@@ -1,0 +1,17 @@
+* day1
+** part one
+#+begin_src lisp :results output
+(defparameter increments 0)
+(defparameter last -1)
+
+(with-open-file (f "./input_day1.txt" :direction :input)
+  (loop for num = (read f nil)
+        while num
+        if (and (> num last) (/= last -1))
+          do (incf increments)
+        always (setq last num)))
+(format t "answer: ~a" increments)
+#+end_src
+
+#+RESULTS:
+: answer: 1475
