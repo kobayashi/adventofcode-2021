@@ -4,7 +4,7 @@
 (defparameter increments 0)
 (defparameter last -1)
 
-(with-open-file (f "./input_day1.txt" :direction :input)
+(with-open-file (f "./day1.input" :direction :input)
   (loop for num = (read f nil)
         while num
         if (and (> num last) (/= last -1))
@@ -15,3 +15,26 @@
 
 #+RESULTS:
 : answer: 1475
+
+** part two
+#+begin_src lisp :results output
+(defparameter increments 0)
+(defparameter last-nums '(0 0 0))
+(defparameter sum 0)
+(defparameter loop-count 0)
+
+(with-open-file (f "./day1.input" :direction :input)
+  (loop for num = (read f nil)
+        while num
+        do (let ((abc (- (+ sum num) (car last-nums))))
+             (setq last-nums (append (cdr last-nums) (list num)))
+             (if (> loop-count 2)
+                 (if (< sum abc) (incf increments)))
+             (setq sum abc)
+             )
+        always (incf loop-count)))
+(format t "answer: ~a" increments)
+#+end_src
+
+#+RESULTS:
+: answer: 1516
