@@ -38,3 +38,48 @@
 
 #+RESULTS:
 : answer: 1516
+
+* day2
+** part one
+#+begin_src lisp :results output
+(defparameter x 0)
+(defparameter y 0)
+
+(with-open-file (f "./day2.input" :direction :input)
+  (loop for line = (read-line f nil)
+        while line
+        do (let* ((space-position 0)
+                  (num 0))
+             (progn (setq space-position (position #\Space line :start 0))
+                    (setq num (parse-integer (subseq line (+ space-position 1))))
+                    (cond ((search "forward" line) (setq x (+ x num)))
+                          ((search "up" line) (setq y (- y num)))
+                          ((search "down" line) (setq y (+ y num))))))))
+(format t "answer: ~a" (* x y))
+#+end_src
+
+#+RESULTS:
+: answer: 1694130
+
+** part two
+#+begin_src lisp :results output
+(defparameter x 0)
+(defparameter y 0)
+(defparameter aim 0)
+
+(with-open-file (f "./day2.input" :direction :input)
+  (loop for line = (read-line f nil)
+        while line
+        do (let* ((space-position 0)
+                  (num 0))
+             (progn (setq space-position (position #\Space line :start 0))
+                    (setq num (parse-integer (subseq line (+ space-position 1))))
+                    (cond ((search "forward" line) (progn (setq x (+ x num))
+                                                          (setq y (+ y (* num aim)))))
+                          ((search "up" line) (setq aim (- aim num)))
+                          ((search "down" line) (setq aim (+ aim num))))))))
+(format t "answer: ~a" (* x y))
+#+end_src
+
+#+RESULTS:
+: answer: 1698850445
